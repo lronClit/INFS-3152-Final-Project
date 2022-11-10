@@ -5,6 +5,7 @@ class MenuOut {
     //had to create a new object as the vars couldnt be seen without it
     proto_1 enteredNum = new proto_1();
 
+    //different menus are used to display whatever is entered by the user in the top bar
     void defaultMenu() {
          System.out.println("****************************************");
          System.out.println("*                                      *");
@@ -101,6 +102,7 @@ class proto_1{
             getMenuChoice();
         }
 
+        //if statement with some super basic math operators 
         if (menuChoice == 3){
             getOperator();
 
@@ -122,18 +124,21 @@ class proto_1{
                 calcTotal = firstInput / secondInput;
             }
 
+            //this else statement breaks the program, not super sure why. Should look into it as id imagine Shaid will want to see some sort of input filtering
             // else{
             //     System.out.println("Invalid Input" + "\n");
             //     getOperator();
             // }
         }
         
+        //just closes down the program
         if (menuChoice == 4){
             System.out.println("\n" + "Shutting Down...");
             System.exit(0);
         }
     }
 
+    //same scanner is being used for all of these methods, should we try to do any memory optimzation or not worry about it?
     static void getMenuChoice(){
         System.out.println("Pick a option from the menu: ");
         System.out.print(":> ");
