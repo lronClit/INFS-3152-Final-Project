@@ -1,0 +1,183 @@
+import java.util.List;
+import java.util.Scanner;
+import java.util.Stack;
+class MenuOut {
+	proto_1 enteredNum = new proto_1();
+
+    void defaultMenu() {
+         System.out.println("****************************************");
+         System.out.println("*                                      *");
+         System.out.println("****************************************");
+         System.out.println("*           Menu Options               *");
+         System.out.println("*                                      *");
+         System.out.println("*  1. Enter First Number               *");
+         System.out.println("*  2. Enter Second Number              *");
+         System.out.println("*  3. Pick Operator                    *");
+         System.out.println("*  4. Exit Program                     *");
+         System.out.println("****************************************");
+     }
+
+    void firstMenu(){
+        System.out.println("****************************************");
+        System.out.println("*                " + enteredNum.firstInput + "                *");
+        System.out.println("****************************************");
+        System.out.println("*           Menu Options               *");
+        System.out.println("*                                      *");
+        System.out.println("*  1. Enter First Number               *");
+        System.out.println("*  2. Enter Second Number              *");
+        System.out.println("*  3. Pick Operator                    *");
+        System.out.println("*  4. Exit Program                     *");
+        System.out.println("****************************************");
+    }
+
+    void secondMenu(){
+        System.out.println("****************************************");
+        System.out.println("*                " + enteredNum.secondInput + "                *");
+        System.out.println("****************************************");
+        System.out.println("*           Menu Options               *");
+        System.out.println("*                                      *");
+        System.out.println("*  1. Enter First Number               *");
+        System.out.println("*  2. Enter Second Number              *");
+        System.out.println("*  3. Pick Operator                    *");
+        System.out.println("*  4. Exit Program                     *");
+        System.out.println("****************************************");
+    }
+
+    void operMenu(){
+        System.out.println("****************************************");
+        System.out.println("*                                      *");
+        System.out.println("****************************************");
+        System.out.println("*           Menu Options               *");
+        System.out.println("*                                      *");
+        System.out.println("*  1. Enter First Number               *");
+        System.out.println("*  2. Enter Second Number              *");
+        System.out.println("*  3. Pick Operator                    *");
+        System.out.println("*  4. Exit Program                     *");
+        System.out.println("****************************************");
+    }
+
+    void calcMenu(){
+        System.out.println("****************************************");
+        System.out.println("*                " + enteredNum.calcTotal + "                *");
+        System.out.println("****************************************");
+        System.out.println("*           Menu Options               *");
+        System.out.println("*                                      *");
+        System.out.println("*  1. Enter First Number               *");
+        System.out.println("*  2. Enter Second Number              *");
+        System.out.println("*  3. Pick Operator                    *");
+        System.out.println("*  4. Exit Program                     *");
+        System.out.println("****************************************");
+    }
+}    
+
+class proto_1{
+
+    //forced to set these damn vars to static idk why
+    static int menuChoice;
+    static double firstInput, secondInput, calcTotal;
+    static String operInput = "";
+    static String equInput;
+    static Scanner scnInput = new Scanner(System.in);
+
+    public static List<String> convertingFormat(String input) {
+		int priority = 0;
+		String prefixBefore = "";
+		Stack<Character> stack = new Stack<Character>();
+		List<String> afterfixArray = new ArrayList<String>();
+		
+		for (int i = 0; i < input.length(); i++) {
+			char ch = input.charAt(i);
+			if (ch == '+' || ch == '-' || ch == '*' || ch == '/') {
+				
+				if (prefixBefore.length() > 0) {
+					afterfixArray.add(prefixBefore);
+				}
+				prefixBefore = "";
+				if (stack.size() <= 0)
+					stack.push(ch);
+				else {
+					Character chTop = (Character) stack.peek();
+					if (chTop == '*' || ch == '-')
+						priority = 1;
+					else 
+						priority = 0;
+					if (priority == 1) {
+						if (ch == '+' || ch == '-') {
+							afterfixArray.add(String.valueOf(stack.pop()));
+							i--;
+						} else {
+							afterfixArray.add(String.valueOf(stack.pop()));
+							i--;
+						}
+					} else {
+							if (ch == '+' || ch == '-') {
+								afterfixArray.add(String.valueOf(stack.pop()));
+								stack.push(ch);
+							} else
+								stack.push(ch);
+						}
+					}
+				} else {
+				prefixBefore += ch;
+				}
+			}
+			afterfixArray.add(prefixBefore);
+			int len = stack.size();
+			for (int j = 0; j < len; j++)
+				afterfixArray.add(stack.pop().toString());
+			return afterfixArray;
+		}
+
+    static void getMenuChoice(){
+        System.out.println("Pick a option from the menu: ");
+        System.out.print(":> ");
+        menuChoice = scnInput.nextInt();
+    }
+
+    static void getFirstNum(){
+        System.out.println("\n" + "Enter Your Number: ");
+        System.out.print(":> ");
+        firstInput = scnInput.nextDouble();
+    }
+
+    static void getSecondNum(){
+        System.out.println("\n" + "Enter Your Number: ");
+        System.out.print(":> ");
+        secondInput = scnInput.nextDouble();
+    }
+
+    static void getOperator(){
+        System.out.println("\n" + "Enter your desired operator: ");
+        System.out.print(":> ");
+        operInput = scnInput.next();
+    }
+
+    //need to parse the data to a int for calculation
+    static void getFreeform(){
+        System.out.println("\n" + "Enter your equation: ");
+        System.out.print(":> ");
+        equInput = scnInput.next();
+
+    }
+
+    static int evaluteQuestion() {
+        int firstValue = Integer.parseInt(scnInput.findInLine("[0-9]*"));
+        int secondValue = Integer.parseInt(scnInput.findInLine("[0-9]*"));
+        String operator = scnInput.findInLine("[^0-9]*").trim();
+        
+        switch (operator){
+            case "+":
+                return firstValue + secondValue;
+            case "-":
+                return firstValue - secondValue;
+            case "/":
+                return firstValue / secondValue;
+            case "*":
+                return firstValue * secondValue;
+            case "%":
+                return firstValue % secondValue;
+            default:
+                throw new RuntimeException("unknown operator: "+ operator);
+        }
+    }
+}
