@@ -5,7 +5,6 @@ class MenuOut {
     //had to create a new object as the vars couldnt be seen without it
     proto_1 enteredNum = new proto_1();
 
-    //different menus are used to display whatever is entered by the user in the top bar
     void defaultMenu() {
          System.out.println("****************************************");
          System.out.println("*                                      *");
@@ -78,6 +77,7 @@ class proto_1{
     static int menuChoice;
     static double firstInput, secondInput, calcTotal;
     static String operInput = "";
+    static String equInput;
     static Scanner scnInput = new Scanner(System.in);
 
     public static void main(String[] args){
@@ -102,7 +102,6 @@ class proto_1{
             getMenuChoice();
         }
 
-        //if statement with some super basic math operators 
         if (menuChoice == 3){
             getOperator();
 
@@ -124,21 +123,23 @@ class proto_1{
                 calcTotal = firstInput / secondInput;
             }
 
-            //this else statement breaks the program, not super sure why. Should look into it as id imagine Shaid will want to see some sort of input filtering
             // else{
             //     System.out.println("Invalid Input" + "\n");
             //     getOperator();
             // }
         }
         
-        //just closes down the program
         if (menuChoice == 4){
             System.out.println("\n" + "Shutting Down...");
             System.exit(0);
         }
+
+        if (menuChoice == 0){
+            getFreeform();
+            evaluteQuestion();
+        }
     }
 
-    //same scanner is being used for all of these methods, should we try to do any memory optimzation or not worry about it?
     static void getMenuChoice(){
         System.out.println("Pick a option from the menu: ");
         System.out.print(":> ");
@@ -161,5 +162,34 @@ class proto_1{
         System.out.println("\n" + "Enter your desired operator: ");
         System.out.print(":> ");
         operInput = scnInput.next();
+    }
+
+    //need to parse the data to a int for calculation
+    static void getFreeform(){
+        System.out.println("\n" + "Enter your equation: ");
+        System.out.print(":> ");
+        equInput = scnInput.next();
+
+    }
+
+    static int evaluteQuestion() {
+        int firstValue = Integer.parseInt(scnInput.findInLine("[0-9]*"));
+        int secondValue = Integer.parseInt(scnInput.findInLine("[0-9]*"));
+        String operator = scnInput.findInLine("[^0-9]*").trim();
+        
+        switch (operator){
+            case "+":
+                return firstValue + secondValue;
+            case "-":
+                return firstValue - secondValue;
+            case "/":
+                return firstValue / secondValue;
+            case "*":
+                return firstValue * secondValue;
+            case "%":
+                return firstValue % secondValue;
+            default:
+                throw new RuntimeException("unknown operator: "+ operator);
+        }
     }
 }
